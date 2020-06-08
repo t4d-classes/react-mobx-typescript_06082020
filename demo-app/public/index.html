@@ -39,5 +39,37 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+    <!-- <script>
+    
+      const h1Element = document.createElement('h1');
+      h1.innerText = "Hello, World";
+
+      const React = {
+        createElement: (tagName, attrs, content) => {
+          return {
+            tagName: tagName,
+            attrs,
+            content,
+          }
+        },
+      }
+
+      // const myH1ReactElement = <h1>Hello World</h1>
+      const myH1ReactElement = React.createElement('h1', null, 'Hello, World');
+
+      const ReactDOM = {
+        render: (reactElement, rootElement) => {
+
+          const element = document.createElement(reactElement.tagName);
+          element.innerText = reactElement.content;
+
+          rootElement.append(element);
+
+        }
+      }
+
+
+
+    </script> -->
   </body>
 </html>
