@@ -4,7 +4,6 @@ import { Color } from '../models/Color';
 
 interface ColorToolProps {
   colors: Color[];
-  newProp?: string;
 }
 
 export const ColorTool: FC<ColorToolProps> = (props) => {
@@ -17,7 +16,13 @@ export const ColorTool: FC<ColorToolProps> = (props) => {
     hexcode: '',
   } /* initial value of the state on the first render */);
 
+  const [ colors, setColors ] = useState(props.colors.concat());
+
   const change = (e: ChangeEvent<HTMLInputElement>) => {
+
+    // console.log(colorForm['hexcode']);
+    // console.log(colorForm.hexcode);
+
     setColorForm({
       // object spread operator
       ...colorForm,
@@ -25,7 +30,18 @@ export const ColorTool: FC<ColorToolProps> = (props) => {
     });
   };
 
-  console.log(colorForm);
+  const addColor = () => {
+
+    setColors(colors.concat({
+      ...colorForm,
+      id: Math.max(...(colors.map(c => c.id) as []), 0) + 1,
+    }));
+
+    setColorForm({
+      name: '', hexcode: '',
+    });
+
+  };
 
   return (
     <>
@@ -33,7 +49,7 @@ export const ColorTool: FC<ColorToolProps> = (props) => {
         <h1>Color Tool</h1>
       </header>
       <ul>
-        {props.colors.map(c => {
+        {colors.map(c => {
           return <li key={c.id}>{c.name.toUpperCase()}</li>;
         })}
       </ul>
@@ -48,6 +64,7 @@ export const ColorTool: FC<ColorToolProps> = (props) => {
           <label htmlFor="color-hexcode-input">Color Hexcode: </label>
           <input type="text" id="color-hexcode-input" name="hexcode" value={colorForm.hexcode} onChange={change} />
         </div>
+        <button type="button" onClick={addColor}>Add Color</button>
       </form>
     </>
   );
