@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState, ChangeEvent } from 'react';
 
 import { Color } from '../models/Color';
 
@@ -8,6 +8,24 @@ interface ColorToolProps {
 }
 
 export const ColorTool: FC<ColorToolProps> = (props) => {
+
+  const [
+    colorForm, /* first item, state data */
+    setColorForm, /* second item, update + re-render function */
+  ] = useState({
+    name: '',
+    hexcode: '',
+  } /* initial value of the state on the first render */);
+
+  const change = (e: ChangeEvent<HTMLInputElement>) => {
+    setColorForm({
+      // object spread operator
+      ...colorForm,
+      [ e.target.name ]: e.target.value,
+    });
+  };
+
+  console.log(colorForm);
 
   return (
     <>
@@ -19,6 +37,18 @@ export const ColorTool: FC<ColorToolProps> = (props) => {
           return <li key={c.id}>{c.name.toUpperCase()}</li>;
         })}
       </ul>
+      <form>
+        <div>
+          {/* React.createElement('label', { htmlFor: 'color-name-input' }, 'Color Name:')   */}
+          <label htmlFor="color-name-input">Color Name: </label>
+          <input type="text" id="color-name-input" name="name" value={colorForm.name} onChange={change} />
+        </div>
+        <div>
+          {/* React.createElement('label', { htmlFor: 'color-name-input' }, 'Color Name:')   */}
+          <label htmlFor="color-hexcode-input">Color Hexcode: </label>
+          <input type="text" id="color-hexcode-input" name="hexcode" value={colorForm.hexcode} onChange={change} />
+        </div>
+      </form>
     </>
   );
 

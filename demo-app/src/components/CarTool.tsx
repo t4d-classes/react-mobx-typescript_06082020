@@ -6,7 +6,11 @@ export interface CarToolProps {
   cars: Car[];
 }
 
-export const CarTool: FC<CarToolProps> = (props) => {
+export const CarTool: FC<CarToolProps> = ({ cars }) => {
+
+  // object destructuring
+  // const cars = props.cars;
+  // const { cars } = props;
 
   return (
     <>
@@ -25,7 +29,7 @@ export const CarTool: FC<CarToolProps> = (props) => {
           </tr>
         </thead>
         <tbody>
-          {props.cars.map(car => <tr key={car.id}>
+          {cars.map(car => <tr key={car.id}>
             <td>{car.id}</td>
             <td>{car.make}</td>
             <td>{car.model}</td>
@@ -39,4 +43,8 @@ export const CarTool: FC<CarToolProps> = (props) => {
     </>
   );
 
+};
+
+CarTool.defaultProps = {
+  cars: [],
 };
