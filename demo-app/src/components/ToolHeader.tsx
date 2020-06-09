@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 
 export interface ToolHeaderProps {
-  headerText: string;
+  headerText?: string;
 }
 
 export const ToolHeader: FC<ToolHeaderProps> =

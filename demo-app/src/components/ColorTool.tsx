@@ -1,7 +1,8 @@
-import React, { FC, useState, ChangeEvent } from 'react';
+import React, { FC, useState } from 'react';
 
 import { Color } from '../models/Color';
 import { ToolHeader } from './ToolHeader';
+import { ColorForm } from './ColorForm';
 
 interface ColorToolProps {
   colors: Color[];
@@ -9,39 +10,14 @@ interface ColorToolProps {
 
 export const ColorTool: FC<ColorToolProps> = ({ colors: initialColors }) => {
 
-  const [
-    colorForm, /* first item, state data */
-    setColorForm, /* second item, update + re-render function */
-  ] = useState({
-    name: '',
-    hexcode: '',
-  } /* initial value of the state on the first render */);
-
   const [ colors, setColors ] = useState(initialColors.concat());
 
-  const change = (e: ChangeEvent<HTMLInputElement>) => {
-
-    // console.log(colorForm['hexcode']);
-    // console.log(colorForm.hexcode);
-
-    setColorForm({
-      // object spread operator
-      ...colorForm,
-      [ e.target.name ]: e.target.value,
-    });
-  };
-
-  const addColor = () => {
+  const addColor = (color: Color) => {
 
     setColors(colors.concat({
-      ...colorForm,
+      ...color,
       id: Math.max(...(colors.map(c => c.id) as []), 0) + 1,
     }));
-
-    setColorForm({
-      name: '', hexcode: '',
-    });
-
   };
 
   return (
@@ -52,19 +28,7 @@ export const ColorTool: FC<ColorToolProps> = ({ colors: initialColors }) => {
           return <li key={c.id}>{c.name.toUpperCase()}</li>;
         })}
       </ul>
-      <form>
-        <div>
-          {/* React.createElement('label', { htmlFor: 'color-name-input' }, 'Color Name:')   */}
-          <label htmlFor="color-name-input">Color Name: </label>
-          <input type="text" id="color-name-input" name="name" value={colorForm.name} onChange={change} />
-        </div>
-        <div>
-          {/* React.createElement('label', { htmlFor: 'color-name-input' }, 'Color Name:')   */}
-          <label htmlFor="color-hexcode-input">Color Hexcode: </label>
-          <input type="text" id="color-hexcode-input" name="hexcode" value={colorForm.hexcode} onChange={change} />
-        </div>
-        <button type="button" onClick={addColor}>Add Color</button>
-      </form>
+      <ColorForm buttonText="Add Color" onSubmitColor={addColor} />
     </>
   );
 
