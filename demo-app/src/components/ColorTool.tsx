@@ -1,6 +1,7 @@
 import React, { FC, useState, ChangeEvent } from 'react';
 
 import { Color } from '../models/Color';
+import { ToolHeader } from './ToolHeader';
 
 interface ColorToolProps {
   colors: Color[];
@@ -45,9 +46,7 @@ export const ColorTool: FC<ColorToolProps> = ({ colors: initialColors }) => {
 
   return (
     <>
-      <header>
-        <h1>Color Tool</h1>
-      </header>
+      <ToolHeader headerText="Color Tool" />
       <ul>
         {colors.map(c => {
           return <li key={c.id}>{c.name.toUpperCase()}</li>;
