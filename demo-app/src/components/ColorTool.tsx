@@ -6,7 +6,7 @@ interface ColorToolProps {
   colors: Color[];
 }
 
-export const ColorTool: FC<ColorToolProps> = (props) => {
+export const ColorTool: FC<ColorToolProps> = ({ colors: initialColors }) => {
 
   const [
     colorForm, /* first item, state data */
@@ -16,7 +16,7 @@ export const ColorTool: FC<ColorToolProps> = (props) => {
     hexcode: '',
   } /* initial value of the state on the first render */);
 
-  const [ colors, setColors ] = useState(props.colors.concat());
+  const [ colors, setColors ] = useState(initialColors.concat());
 
   const change = (e: ChangeEvent<HTMLInputElement>) => {
 
