@@ -4,6 +4,7 @@ import { Color } from '../models/Color';
 
 interface ColorToolProps {
   colors: Color[];
+  newProp?: string;
 }
 
 export const ColorTool: FC<ColorToolProps> = (props) => {
@@ -14,8 +15,9 @@ export const ColorTool: FC<ColorToolProps> = (props) => {
         <h1>Color Tool</h1>
       </header>
       <ul>
-        {props.colors.map(c =>
-          <li key={c.id}>{c.name}</li>)}
+        {props.colors.map(c => {
+          return <li key={c.id}>{c.name.toUpperCase()}</li>;
+        })}
       </ul>
     </>
   );
