@@ -1,4 +1,4 @@
-import React, { FC, useState, ChangeEvent } from 'react';
+import React, { ChangeEvent } from 'react';
 
 import { Car } from '../models/Car';
 import { blankToNaN, nanToBlank } from '../utils';
@@ -9,64 +9,103 @@ interface CarEditRowProps {
   onCancelCar: () => void;
 }
 
-export const CarEditRow: FC<CarEditRowProps> = ({
-  car,
-  onSaveCar,
-  onCancelCar: cancelCar,
-}) =>  {
+interface CarEditRowState {
+  make: string;
+  model: string;
+  year: number;
+  color: string;
+  price: number;
+  [ x: string ]: any; // to allow the computed property
+}
 
-  const [ carForm, setCarForm ] = useState({
-    // ...car,
-    make: car.make,
-    model: car.model,
-    year: car.year,
-    color: car.color,
-    price: car.price,
-  });
+export class CarEditRow extends React.Component<CarEditRowProps, CarEditRowState> {
 
-  const change = (e: ChangeEvent<HTMLInputElement>) => {
+  firstName: string;
 
-    setCarForm({
-      ...carForm,
+  // state = {
+  //   make: this.props.car.make,
+  //   model: this.props.car.model,
+  //   year: this.props.car.year,
+  //   color: this.props.car.color,
+  //   price: this.props.car.price,
+  // };
+
+  constructor(props: CarEditRowProps) {
+    super(props);
+
+    this.firstName = 'Bob';
+
+    this.state = {
+      make: props.car.make,
+      model: props.car.model,
+      year: props.car.year,
+      color: props.car.color,
+      price: props.car.price,
+    };
+
+    this.change = this.change.bind(this);
+    this.saveCar = this.saveCar.bind(this);
+  }
+
+  change(e: ChangeEvent<HTMLInputElement>) {
+    this.setState({
       [ e.target.name ]: e.target.type === 'number'
         ? blankToNaN(e.target.value) : e.target.value,
     });
   };
 
-
-  const saveCar = () => {
-    onSaveCar({
-      ...carForm,
-      id: car.id,
+  saveCar() {
+    this.props.onSaveCar({
+      ...this.state,
+      id: this.props.car.id,
     });
+  };
+
+  // change = (e: ChangeEvent<HTMLInputElement>) => {
+  //   this.setState({
+  //     [ e.target.name ]: e.target.type === 'number'
+  //       ? blankToNaN(e.target.value) : e.target.value,
+  //   });
+  // };
+
+  // saveCar = () => {
+  //   this.props.onSaveCar({
+  //     ...this.state,
+  //     id: this.props.car.id,
+  //   });
+  // };
+
+  render() {
+    return (
+      <tr>
+        <td>{this.props.car.id}</td>
+        <td>
+          <input type="text" value={this.state.make}
+            name="make" onChange={this.change} />
+        </td>
+        <td>
+          <input type="text" value={this.state.model}
+            name="model" onChange={this.change} />
+        </td>
+        <td>
+          <input type="number" value={nanToBlank(this.state.year)}
+            name="year" onChange={this.change} />
+        </td>
+        <td>
+          <input type="text" value={this.state.color}
+            name="color" onChange={this.change} />
+        </td>
+        <td>
+          <input type="number" value={nanToBlank(this.state.price)}
+            name="price" onChange={this.change} />
+        </td>
+        <td>
+          <button type="button" onClick={this.saveCar}>Save</button>
+          <button type="button" onClick={this.props.onCancelCar}>Cancel</button>
+        </td>
+      </tr>
+    );
   }
 
-  return <tr>
-    <td>{car.id}</td>
-    <td>
-      <input type="text" value={carForm.make}
-        name="make" onChange={change} />
-    </td>
-    <td>
-      <input type="text" value={carForm.model}
-        name="model" onChange={change} />
-    </td>
-    <td>
-      <input type="number" value={nanToBlank(carForm.year)}
-        name="year" onChange={change} />
-    </td>
-    <td>
-      <input type="text" value={carForm.color}
-        name="color" onChange={change} />
-    </td>
-    <td>
-      <input type="number" value={nanToBlank(carForm.price)}
-        name="price" onChange={change} />
-    </td>
-    <td>
-      <button type="button" onClick={saveCar}>Save</button>
-      <button type="button" onClick={cancelCar}>Cancel</button>
-    </td>
-  </tr>;
+}
 
-};
