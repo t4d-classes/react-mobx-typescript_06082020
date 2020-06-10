@@ -5,8 +5,16 @@ import { Car } from '../models/Car';
 export interface CarViewRowProps { 
   car: Car;
   onEditCar: (carId: number) => void;
-  onDeleteCar: (carId: number) => void;
+  onDeleteCar?: (carId: number) => void;
 }
+
+// falsy
+// false
+// 0
+// ''
+// NaN
+// null
+// undefined
 
 export const CarViewRow: FC<CarViewRowProps> = ({
   car,
@@ -23,8 +31,10 @@ export const CarViewRow: FC<CarViewRowProps> = ({
       <td>{car.color}</td>
       <td>{car.price}</td>
       <td>
-        <button type="button" onClick={() => editCar(car.id!)}>Edit</button>
-        <button type="button" onClick={() => deleteCar(car.id!)}>Delete</button>
+        {car.id && <>
+          {editCar && <button type="button" onClick={() => editCar(car.id!)}>Edit</button>}
+          {deleteCar && <button type="button" onClick={() => deleteCar(car.id!)}>Delete</button>}
+       </>}
       </td>
     </tr>
   );

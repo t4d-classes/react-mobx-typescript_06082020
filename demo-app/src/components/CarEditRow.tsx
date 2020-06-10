@@ -16,6 +16,7 @@ export const CarEditRow: FC<CarEditRowProps> = ({
 }) =>  {
 
   const [ carForm, setCarForm ] = useState({
+    // ...car,
     make: car.make,
     model: car.model,
     year: car.year,

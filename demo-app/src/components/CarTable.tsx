@@ -9,7 +9,7 @@ export interface CarTableProps {
   cars: Car[];
   editCarId: number;
   onEditCar: (carId: number) => void;
-  onDeleteCar: (carId: number) => void;
+  onDeleteCar?: (carId: number) => void;
   onSaveCar: (car: Car) => void;
   onCancelCar: () => void;
 }
@@ -22,6 +22,14 @@ export const CarTable: FC<CarTableProps> = ({
   onCancelCar: cancelCar,
 }) => {
 
+  function switchCarRow(car: Car) {
+    if (editCarId === car.id) {
+      return <CarEditRow key={car.id} car={car} onSaveCar={saveCar} onCancelCar={cancelCar} />;
+    } else {
+      return <CarViewRow key={car.id} car={car} onEditCar={editCar} onDeleteCar={deleteCar} />;
+    }
+  }
+
   return (
     <table>
       <thead>
@@ -32,12 +40,11 @@ export const CarTable: FC<CarTableProps> = ({
           <th>Year</th>
           <th>Color</th>
           <th>Price</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody>
-        {cars.map(car => editCarId === car.id
-          ? <CarEditRow key={car.id} car={car} onSaveCar={saveCar} onCancelCar={cancelCar} />
-          : <CarViewRow key={car.id} car={car} onEditCar={editCar} onDeleteCar={deleteCar} />)}
+        {cars.map(switchCarRow)}
       </tbody>
     </table>
   );
