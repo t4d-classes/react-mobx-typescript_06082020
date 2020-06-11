@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import { observable, action, computed, configure, isObservableArray, runInAction } from 'mobx';
 import { useObserver } from 'mobx-react-lite';
 
-import { RestHistoryEntry } from './models/RestHistoryEntry';
 import { HistoryService } from './services/HistoryService';
 
 import 'mobx-react-lite/batchingForReactDom';
