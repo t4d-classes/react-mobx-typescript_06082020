@@ -28,6 +28,11 @@ class CalcToolStore {
   @observable
   private _history: HistoryEntry[] = [];
 
+  @computed
+  get nextId() {
+    return Math.max(...this._history.map(e => e.opId) as [], 0) + 1;
+  }  
+
   // reference this like a data property - NOT CALL IT LIKE FUNCTION
   @computed
   get history() {
@@ -36,7 +41,7 @@ class CalcToolStore {
 
   appendToHistory(opName: string, opValue: number) {
     this._history.push({
-      opId: Math.max(...this._history.map(e => e.opId) as [], 0) + 1,
+      opId: this.nextId,
       opName,
       opValue,
     });
