@@ -1,46 +1,55 @@
-import React from 'react';
+import React, { FC } from 'react';
 import ReactDOM from 'react-dom';
+import { observable, action, decorate, configure } from 'mobx';
+import { useObserver } from 'mobx-react-lite';
 
-import { Color } from './models/Color';
-import { Car } from './models/Car';
-import { ColorTool } from './components/ColorTool';
-import { CarTool } from './components/CarTool';
+import 'mobx-react-lite/batchingForReactDom';
 
-const colorList: Color[] = [
-  { id: 1, name: 'orange', hexcode: '12ef34' },
-  { id: 2, name: 'blue', hexcode: 'abe124' },
-  { id: 3, name: 'green', hexcode: '56ac12' },
-];
+// the state can only be mutated from actions
+configure({ enforceActions: 'always' });
 
-const carList: Car[] = [
-  { id: 1, make: 'Ford', model: 'Fusion Hybrid', year: 2020, color: 'red', price: 45000 },
-  { id: 2, make: 'Tesla', model: 'S', year: 2019, color: 'blue', price: 100000 },
-];
+// place below the class
+// decorate(CalcToolStore, {
+//   result: observable,
+//   increment: action.bound
+// });
+
+
+class CalcToolStore {
+
+  @observable
+  result = 0;
+
+  @action.bound
+  increment() {
+    this.result++;
+  }
+}
+
+
+interface CalcToolProps {
+  store: CalcToolStore;
+}
+
+const CalcTool: FC<CalcToolProps> = ({ store }) => {
+
+  return useObserver(() => (
+    <form>
+      <div>Result: {store.result}</div>
+      <div>
+        <button type="button" onClick={store.increment}>
+          Increment
+        </button>
+      </div>
+    </form>
+  ));
+
+};
+
+const store = new CalcToolStore();
 
 ReactDOM.render(
-  <>
-    <ColorTool colors={colorList} />
-    <CarTool cars={carList} />
-  </>,
-  document.querySelector('#bob'),    
+  <CalcTool store={store} />,
+  document.querySelector('#bob'),
 );
-
-
-
-
-
-
-
-
-
-// function declaration
-// function HelloWorld2() {
-
-// }
-
-// function expression
-// const HelloWorld3 = function() {
-
-// };
-
 

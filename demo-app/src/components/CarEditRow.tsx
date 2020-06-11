@@ -20,60 +20,58 @@ interface CarEditRowState {
 
 export class CarEditRow extends React.Component<CarEditRowProps, CarEditRowState> {
 
-  firstName: string;
-
-  // state = {
-  //   make: this.props.car.make,
-  //   model: this.props.car.model,
-  //   year: this.props.car.year,
-  //   color: this.props.car.color,
-  //   price: this.props.car.price,
-  // };
-
-  constructor(props: CarEditRowProps) {
-    super(props);
-
-    this.firstName = 'Bob';
-
-    this.state = {
-      make: props.car.make,
-      model: props.car.model,
-      year: props.car.year,
-      color: props.car.color,
-      price: props.car.price,
-    };
-
-    this.change = this.change.bind(this);
-    this.saveCar = this.saveCar.bind(this);
-  }
-
-  change(e: ChangeEvent<HTMLInputElement>) {
-    this.setState({
-      [ e.target.name ]: e.target.type === 'number'
-        ? blankToNaN(e.target.value) : e.target.value,
-    });
+  state = {
+    make: this.props.car.make,
+    model: this.props.car.model,
+    year: this.props.car.year,
+    color: this.props.car.color,
+    price: this.props.car.price,
   };
 
-  saveCar() {
-    this.props.onSaveCar({
-      ...this.state,
-      id: this.props.car.id,
-    });
-  };
+  // constructor(props: CarEditRowProps) {
+  //   super(props);
 
-  // change = (e: ChangeEvent<HTMLInputElement>) => {
+  //   this.firstName = 'Bob';
+
+  //   this.state = {
+  //     make: props.car.make,
+  //     model: props.car.model,
+  //     year: props.car.year,
+  //     color: props.car.color,
+  //     price: props.car.price,
+  //   };
+
+  //   this.change = this.change.bind(this);
+  //   this.saveCar = this.saveCar.bind(this);
+  // }
+
+  // change(e: ChangeEvent<HTMLInputElement>) {
   //   this.setState({
   //     [ e.target.name ]: e.target.type === 'number'
   //       ? blankToNaN(e.target.value) : e.target.value,
   //   });
   // };
 
-  // saveCar = () => {
+  // saveCar() {
   //   this.props.onSaveCar({
   //     ...this.state,
   //     id: this.props.car.id,
   //   });
   // };
+
+  change = (e: ChangeEvent<HTMLInputElement>) => {
+    this.setState({
+      [ e.target.name ]: e.target.type === 'number'
+        ? blankToNaN(e.target.value) : e.target.value,
+    });
+  };
+
+  saveCar = () => {
+    this.props.onSaveCar({
+      ...this.state,
+      id: this.props.car.id,
+    });
+  };
 
   render() {
     return (

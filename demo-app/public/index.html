@@ -72,5 +72,171 @@
 
     </script> -->
 
+    <!-- <script>
+
+      'use strict';
+
+      function doIt() {
+        console.log(this);
+
+        // const that = this;
+
+        function inner() {
+          console.log(this);
+        }
+
+        // const inner = () => {
+        //   console.log(this);
+        // };
+
+        inner();
+      }
+
+      // doIt(); // this = undefined
+
+      // window.doIt(); // this = window
+
+      const o = {
+        id: 2,
+        doIt: doIt,
+      };
+
+      o.doIt(); // this = o
+
+      // console.log(window.doIt === o.doIt);
+
+      // window.setTimeout(o.doIt, 2000);
+
+
+    </script> -->
+
+    <!-- <script>
+
+      'use strict';
+
+      const parent = {
+        name: 'parent',
+        amt: 100,
+      };
+
+      const child = Object.create(parent);
+
+      child.name = 'child';
+
+      console.log(child.amt);
+
+      parent.amt = 200;
+
+      console.log(child.amt);
+
+      child.amt = 0.01;
+
+      console.log(child.amt);
+      console.log(parent.amt);
+
+      delete child.amt;
+      console.log(child.amt);
+
+
+      console.log(child);
+
+
+
+
+    </script> -->
+
+    <!-- <script>
+
+      'use strict';
+
+      // if (!Array.prototype.forEach) {
+
+        Array.prototype.forEach = function(callback) {
+
+          console.log('you are hacked!');
+
+          // for (let x=0; x<this.length; x++) {
+          //   callback(this[x]);
+          // }
+
+        };
+      // }
+
+      const nums = [1,2,3,4,5];
+
+      nums.forEach(n => console.log(n));
+
+
+    </script> -->
+
+    <!-- <script>
+
+      'use strict';
+
+      class Person {
+
+        constructor(firstName, lastName) {
+          this.firstName = firstName;
+          this.lastName = lastName;
+        }
+
+        getFullName() {
+          return this.firstName + ' ' + this.lastName;
+        }
+      }
+
+      console.dir(Person);
+
+      const p = new Person('Bob', 'Smith');
+      console.log(p.getFullName());
+
+
+      function Person2(firstName, lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+      }
+
+      Person2.prototype.getFullName = function() {
+        return this.firstName + ' ' + this.lastName;
+      };
+
+      console.dir(Person2);
+
+      const p2 = new Person2('Bob', 'Smith');
+      console.log(p2.getFullName());
+
+
+
+    </script> -->
+  
+    <!-- <script>
+
+      'use strict';
+
+      function doIt(a,b,c) {
+        console.log(this);
+        console.log(a,b,c);
+      }
+
+      // doIt.call({ id: 2 }, 'a', 'b', 'c');
+      // doIt.apply({ id: 2 }, ['a', 'b', 'c']);
+
+      function myBind(fn, context) {
+
+        return function(...params) {
+          fn.call(context, ...params);
+        };
+
+      }
+
+      const doIt2 = myBind(doIt, { id: 2 });
+
+      doIt2();
+
+
+    </script> -->
+
+
+
   </body>
 </html>
