@@ -43,34 +43,73 @@ class CalcToolStore {
 
 
 interface CalcToolProps {
-  store: CalcToolStore;
+  result: number;
+  onAdd: (val: number) => void;
+  onSubtract: (val: number) => void;
+  onMultiply: (val: number) => void;
+  onDivide: (val: number) => void;
 }
 
-const CalcTool: FC<CalcToolProps> = ({ store }) => {
+
+const CalcTool: FC<CalcToolProps> = ({
+  result,
+  onAdd: add, onSubtract: subtract,
+  onMultiply: multiply, onDivide: divide,
+ }) => {
 
   const [ num, setNum ] = useState(0);
 
-  return useObserver(() => (
+  const resetFormWrapperFn = (fn: () => void) => {
+    return () => {
+      fn(); // unique part, each kind of operation
+      setNum(0); // common, reset the form
+    };
+  }
+
+  return (
     <form>
-      <div>Result: {store.result}</div>
+      <div>Result: {result}</div>
       <div>
         Num: <input type="number" value={num} onChange={e => setNum(Number(e.target.value))} />
       </div>
       <div>
-        <button type="button" onClick={() => store.add(num)}>Add</button>
-        <button type="button" onClick={() => store.subtract(num)}>Subtract</button>
-        <button type="button" onClick={() => store.multiply(num)}>Multiply</button>
-        <button type="button" onClick={() => store.divide(num)}>Divide</button>
+        <button type="button" onClick={resetFormWrapperFn(() => add(num))}>Add</button>
+        <button type="button" onClick={resetFormWrapperFn(() => subtract(num))}>Subtract</button>
+        <button type="button" onClick={resetFormWrapperFn(() => multiply(num))}>Multiply</button>
+        <button type="button" onClick={resetFormWrapperFn(() => divide(num))}>Divide</button>
       </div>
     </form>
-  ));
+  );
+
+};
+
+interface CalcToolContainerProps {
+  store: CalcToolStore;
+}
+
+const CalcToolContainer: FC<CalcToolContainerProps> = ({ store }) => {
+
+  return useObserver(() => {
+
+    const calcToolProps: CalcToolProps = {
+      result: store.result,
+      onAdd: store.add,
+      onSubtract: store.subtract,
+      onMultiply: store.multiply,
+      onDivide: store.divide,
+    };
+
+    return <CalcTool {...calcToolProps} />;
+
+  });
+
 
 };
 
 const store = new CalcToolStore();
 
 ReactDOM.render(
-  <CalcTool store={store} />,
+  <CalcToolContainer store={store} />,
   document.querySelector('#bob'),
 );
 
