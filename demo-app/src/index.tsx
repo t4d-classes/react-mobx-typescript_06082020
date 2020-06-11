@@ -23,10 +23,25 @@ type HistoryEntry = {
 class CalcToolStore {
 
   @observable
-  result = 0;
-
-  @observable
   private _history: HistoryEntry[] = [];
+
+  @computed
+  get result() {
+    return this._history.reduce( (acc, entry) => {
+      switch (entry.opName) {
+        case '+':
+          return acc + entry.opValue;
+        case '-':
+          return acc - entry.opValue;
+        case '*':
+          return acc * entry.opValue;
+        case '/':
+          return acc / entry.opValue;
+        default:
+          return acc;
+      }
+    }, 0);
+  }
 
   @computed
   get nextId() {
@@ -39,6 +54,63 @@ class CalcToolStore {
     return this._history.slice();
   }
 
+  @computed
+  get counts() {
+
+    console.log('ran counts');
+
+    const opCounts = {
+      addCount: 0,
+      subtractCount: 0,
+      multiplyCount: 0,
+      divideCount: 0,
+    };
+
+    return this._history.reduce( (acc, entry) => {
+      switch (entry.opName) {
+        case '+':
+          acc.addCount++;
+          break;
+        case '-':
+          acc.subtractCount++;
+          break;
+        case '*':
+          acc.multiplyCount++;
+          break;
+        case '/':
+          acc.divideCount++;
+          break;
+      }
+
+      return acc;
+    }, opCounts);
+
+  }
+
+  @computed
+  get addCount() {
+    console.log('ran add counts');
+    return this.counts.addCount;
+  }
+
+  @computed
+  get subtractCount() {
+    console.log('ran subtract counts');
+    return this.counts.subtractCount;
+  }
+
+  @computed
+  get multiplyCount() {
+    console.log('ran multiply counts');
+    return this.counts.multiplyCount;
+  }
+
+  @computed
+  get divideCount() {
+    console.log('ran divide counts');
+    return this.counts.divideCount;
+  }
+
   appendToHistory(opName: string, opValue: number) {
     this._history.push({
       opId: this.nextId,
@@ -49,25 +121,21 @@ class CalcToolStore {
 
   @action.bound
   add(val: number) {
-    this.result += val;
     this.appendToHistory('+', val);
   }
 
   @action.bound
   subtract(val: number) {
-    this.result -= val;
     this.appendToHistory('-', val);
   }
 
   @action.bound
   multiply(val: number) {
-    this.result *= val;
     this.appendToHistory('*', val);
   }
 
   @action.bound
   divide(val: number) {
-    this.result /= val;
     this.appendToHistory('/', val);
   }
 
@@ -78,9 +146,7 @@ class CalcToolStore {
       throw Error('history is not observable');
     }
 
-    this.result = 0;
     this._history.replace([]);
-
   }
 
   @action.bound
@@ -94,6 +160,10 @@ class CalcToolStore {
 interface CalcToolProps {
   result: number;
   history: HistoryEntry[];
+  addCount: number;
+  subtractCount: number;
+  multiplyCount: number;
+  divideCount: number;
   onAdd: (val: number) => void;
   onSubtract: (val: number) => void;
   onMultiply: (val: number) => void;
@@ -104,7 +174,7 @@ interface CalcToolProps {
 
 
 const CalcTool: FC<CalcToolProps> = ({
-  result, history,
+  result, history, addCount, subtractCount, multiplyCount, divideCount,
   onAdd: add, onSubtract: subtract,
   onMultiply: multiply, onDivide: divide,
   onClear: clear, onDeleteEntry: deleteEntry,
@@ -140,6 +210,25 @@ const CalcTool: FC<CalcToolProps> = ({
           </button>
         </li>)}
       </ul>
+      <table>
+        <caption>Operation Count</caption>
+        <thead>
+          <tr>
+            <th>Add</th>
+            <th>Subtract</th>
+            <th>Multiply</th>
+            <th>Divide</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{addCount}</td>
+            <td>{subtractCount}</td>
+            <td>{multiplyCount}</td>
+            <td>{divideCount}</td>
+          </tr>
+        </tbody>
+      </table>
     </form>
   );
 
@@ -156,6 +245,10 @@ const CalcToolContainer: FC<CalcToolContainerProps> = ({ store }) => {
     const calcToolProps: CalcToolProps = {
       result: store.result,
       history: store.history,
+      addCount: store.addCount,
+      subtractCount: store.subtractCount,
+      multiplyCount: store.multiplyCount,
+      divideCount: store.divideCount,
       onAdd: store.add,
       onSubtract: store.subtract,
       onMultiply: store.multiply,
