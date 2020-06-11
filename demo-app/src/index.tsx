@@ -1,6 +1,6 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
-import { observable, action, computed, configure, autorun, isObservableArray } from 'mobx';
+import { observable, action, computed, configure, isObservableArray, runInAction } from 'mobx';
 import { useObserver } from 'mobx-react-lite';
 
 import 'mobx-react-lite/batchingForReactDom';
@@ -13,6 +13,13 @@ configure({ enforceActions: 'always' });
 //   result: observable,
 //   increment: action.bound
 // });
+
+type RestHistoryEntry = {
+  id: number;
+  name: string;
+  value: number;
+}
+
 
 type HistoryEntry = {
   opId: number;
@@ -117,6 +124,26 @@ class CalcToolStore {
       opName,
       opValue,
     });
+  }
+
+  @action.bound
+  async refreshHistory() {
+
+    const res = await fetch('http://localhost:3060/history');
+    const history = (await res.json()) as RestHistoryEntry[];
+
+    runInAction(() => {
+      if (!isObservableArray(this._history)) {
+        throw Error('history should be observable');
+      }
+
+      this._history.replace(history.map(entry => ({
+        opId: entry.id,
+        opName: entry.name,
+        opValue: entry.value,
+      })));
+    });
+
   }
 
   @action.bound
@@ -240,6 +267,12 @@ interface CalcToolContainerProps {
 
 const CalcToolContainer: FC<CalcToolContainerProps> = ({ store }) => {
 
+  useEffect(() => {
+
+    store.refreshHistory();
+
+  }, [ store ]);
+
   return useObserver(() => {
 
     const calcToolProps: CalcToolProps = {
@@ -271,19 +304,3 @@ ReactDOM.render(
   document.querySelector('#bob'),
 );
 
-
-// const o = observable({
-//   items: [1,2,3],
-// });
-
-// autorun(() => {
-//   console.log(o.items.slice());
-// });
-
-// const newItems = o.items.concat(4);
-
-// if (isObservableArray(o.items)) {
-//   o.items.replace(newItems);
-// }
-
-// o.items = newItems;

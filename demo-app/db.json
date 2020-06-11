@@ -1,4 +1,7 @@
 {
+  "history": [
+    { "id": 1, "name": "+", "value": 1 }
+  ],
   "colors": [
     { "id": 1, "name": "red", "hexcode": "#ff0000" },
     { "id": 2, "name": "green", "hexcode": "#00ff00" },

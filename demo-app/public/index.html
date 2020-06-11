@@ -236,6 +236,166 @@
 
     </script> -->
 
+    <script>
+
+      // function domloaded() {
+
+      //   console.log('a')
+
+      // }
+
+      // document.addEventListener('DOMContentLoaded', domloaded);
+
+      // setTimeout(() => {
+      //     console.log('a');
+
+      //     setTimeout(() => {
+      //         console.log('b');
+
+      //         setTimeout(() => {
+      //             console.log('c');
+      //         }, 500);
+
+      //     }, 1000);
+
+      // }, 2000);
+
+      // function allDone() {
+      //   console.log('all done');
+      // }
+
+      // let counter = 0;
+
+      // counter++;
+      // setTimeout(() => {
+      //   console.log('a');
+      //   counter--;
+      //   if (counter === 0) {
+      //     allDone();
+      //   }
+      // }, 2000);
+
+      // counter++;
+      // setTimeout(() => {
+      //   console.log('b');
+      //   counter--;
+      //   if (counter === 0) {
+      //     allDone();
+      //   }
+      // }, 500);
+
+      // counter++;
+      // setTimeout(() => {
+      //   console.log('c');
+      //   counter--;
+      //   if (counter === 0) {
+      //     allDone();
+      //   }
+      // }, 1000);
+
+    </script>
+    <script>
+
+
+      // class Promise {
+
+      //   constructor(fn) {
+
+      //     this.resolveFns = [];
+      //     this.rejectFns = [];
+
+      //     const resolve = (result) => {
+      //       this.resolveFns.forEach(fn => fn(result));
+      //     }
+
+      //     const reject = (result) => {
+      //       this.rejectFns.forEach(fn => fn(result));
+      //     }
+
+      //     fn(resolve, reject);
+      //   }
+
+      //   then(fn) {
+      //     this.resolveFns.push(fn);
+      //   }
+
+      //   catch(fn) {
+      //     this.rejectFns.push(fn);
+      //   }
+
+
+      // }
+
+
+      // console.log('creating the promise');
+      // const p1 = new Promise((resolve, reject) => {
+      //   console.log('calling settimeout');
+      //   // setTimeout(() => {
+      //   //   // reject('step 1 done');
+      //   // }, 2000);
+      //   resolve('test');
+      // });
+
+      // // p1.then(result => console.log(result));
+
+      // // p1
+      // //   .then(result => {
+      // //     console.log(result);
+      // //   })
+      // //   .catch(result => {
+      // //     console.log('rejected: ', result);
+      // //   });
+
+      // console.log('waiting');
+
+
+      // const getP1 = () => new Promise(resolve => setTimeout(() => resolve('a'), 2000));
+      // const getP2 = () => new Promise(resolve => setTimeout(() => resolve('b'), 4000));
+      // const getP3 = () => new Promise(resolve => setTimeout(() => resolve('c'), 6000));
+
+      // getP1()
+      //   .then(r => {
+      //     console.log(r);
+      //     return getP2();
+      //   })
+      //   .then(r => {
+      //     console.log(r);
+      //     return getP3();
+      //   })
+      //   .then(r => {
+      //     console.log(r);
+      //   });
+
+      // const p1 = getP1();
+      // p1.then(r => console.log(r));
+      // const p2 = getP2();
+      // p2.then(r => console.log(r));
+      // const p3 = getP3()
+      // p3.then(r => console.log(r));
+
+      // Promise
+      //   .all([ p1, p2, p3 ])
+      //   .then(results => {
+      //     console.log('all done');
+      //     console.log(results);
+      //   });
+
+      // const doIt = async () => {
+
+      //   const r1 = await getP1();
+      //   console.log(r1); // a
+
+      //   const r2 = await getP2();
+      //   console.log(r2); // b
+
+      //   const r3 = await getP3();
+      //   console.log(r3); // c
+      // };
+
+      // doIt().then(() => console.log('all done'));
+
+
+    </script>
 
 
   </body>
