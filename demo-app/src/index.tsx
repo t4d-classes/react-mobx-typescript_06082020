@@ -34,41 +34,75 @@ class CalcToolStore {
     return this._history.slice();
   }
 
+  appendToHistory(opName: string, opValue: number) {
+    this._history.push({
+      opId: Math.max(...this._history.map(e => e.opId) as [], 0) + 1,
+      opName,
+      opValue,
+    });
+  }
+
   @action.bound
   add(val: number) {
     this.result += val;
+    this.appendToHistory('+', val);
   }
 
   @action.bound
   subtract(val: number) {
     this.result -= val;
+    this.appendToHistory('-', val);
   }
 
   @action.bound
   multiply(val: number) {
     this.result *= val;
+    this.appendToHistory('*', val);
   }
 
   @action.bound
   divide(val: number) {
     this.result /= val;
+    this.appendToHistory('/', val);
+  }
+
+  @action.bound
+  clear() {
+
+    if (!isObservableArray(this._history)) {
+      throw Error('history is not observable');
+    }
+
+    this.result = 0;
+    this._history.replace([]);
+
+  }
+
+  @action.bound
+  deleteEntry(entryId: number) {
+    const entryIndex = this._history.findIndex(e => e.opId === entryId);
+    this._history.splice(entryIndex, 1);
   }
 }
 
 
 interface CalcToolProps {
   result: number;
+  history: HistoryEntry[];
   onAdd: (val: number) => void;
   onSubtract: (val: number) => void;
   onMultiply: (val: number) => void;
   onDivide: (val: number) => void;
+  onClear: () => void;
+  onDeleteEntry: (entryId: number) => void;
 }
 
 
 const CalcTool: FC<CalcToolProps> = ({
-  result,
+  result, history,
   onAdd: add, onSubtract: subtract,
   onMultiply: multiply, onDivide: divide,
+  onClear: clear, onDeleteEntry: deleteEntry,
  }) => {
 
   const [ num, setNum ] = useState(0);
@@ -91,7 +125,16 @@ const CalcTool: FC<CalcToolProps> = ({
         <button type="button" onClick={resetFormWrapperFn(() => subtract(num))}>Subtract</button>
         <button type="button" onClick={resetFormWrapperFn(() => multiply(num))}>Multiply</button>
         <button type="button" onClick={resetFormWrapperFn(() => divide(num))}>Divide</button>
+        <button type="button" onClick={resetFormWrapperFn(() => clear())}>Clear</button>
       </div>
+      <ul>
+        {history.map(entry => <li key={entry.opId}>
+          {entry.opName} {entry.opValue}
+          <button type="button" onClick={() => deleteEntry(entry.opId)}>
+            X
+          </button>
+        </li>)}
+      </ul>
     </form>
   );
 
@@ -107,10 +150,13 @@ const CalcToolContainer: FC<CalcToolContainerProps> = ({ store }) => {
 
     const calcToolProps: CalcToolProps = {
       result: store.result,
+      history: store.history,
       onAdd: store.add,
       onSubtract: store.subtract,
       onMultiply: store.multiply,
       onDivide: store.divide,
+      onClear: store.clear,
+      onDeleteEntry: store.deleteEntry,
     };
 
     return <CalcTool {...calcToolProps} />;
