@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import ReactDOM from 'react-dom';
-import { observable, action, decorate, configure } from 'mobx';
+import { observable, action, computed, configure, autorun, isObservableArray } from 'mobx';
 import { useObserver } from 'mobx-react-lite';
 
 import 'mobx-react-lite/batchingForReactDom';
@@ -14,11 +14,25 @@ configure({ enforceActions: 'always' });
 //   increment: action.bound
 // });
 
+type HistoryEntry = {
+  opId: number;
+  opName: string;
+  opValue: number;
+}
 
 class CalcToolStore {
 
   @observable
   result = 0;
+
+  @observable
+  private _history: HistoryEntry[] = [];
+
+  // reference this like a data property - NOT CALL IT LIKE FUNCTION
+  @computed
+  get history() {
+    return this._history.slice();
+  }
 
   @action.bound
   add(val: number) {
@@ -113,3 +127,19 @@ ReactDOM.render(
   document.querySelector('#bob'),
 );
 
+
+// const o = observable({
+//   items: [1,2,3],
+// });
+
+// autorun(() => {
+//   console.log(o.items.slice());
+// });
+
+// const newItems = o.items.concat(4);
+
+// if (isObservableArray(o.items)) {
+//   o.items.replace(newItems);
+// }
+
+// o.items = newItems;
