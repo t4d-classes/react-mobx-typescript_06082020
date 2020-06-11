@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom';
 import { observable, action, computed, configure, isObservableArray, runInAction } from 'mobx';
 import { useObserver } from 'mobx-react-lite';
 
+import { RestHistoryEntry } from './models/RestHistoryEntry';
+import { HistoryService } from './services/HistoryService';
+
 import 'mobx-react-lite/batchingForReactDom';
 
 // the state can only be mutated from actions
@@ -14,12 +17,6 @@ configure({ enforceActions: 'always' });
 //   increment: action.bound
 // });
 
-type RestHistoryEntry = {
-  id: number;
-  name: string;
-  value: number;
-}
-
 
 type HistoryEntry = {
   opId: number;
@@ -28,6 +25,8 @@ type HistoryEntry = {
 }
 
 class CalcToolStore {
+
+  constructor(private _historySvc: HistoryService) { }
 
   @observable
   private _history: HistoryEntry[] = [];
@@ -118,19 +117,17 @@ class CalcToolStore {
     return this.counts.divideCount;
   }
 
-  appendToHistory(opName: string, opValue: number) {
-    this._history.push({
-      opId: this.nextId,
-      opName,
-      opValue,
-    });
+  async appendToHistory(opName: string, opValue: number) {
+    await this._historySvc
+      .appendHistoryEntry({ name: opName, value: opValue });
+
+    return this.refreshHistory();
   }
 
   @action.bound
   async refreshHistory() {
 
-    const res = await fetch('http://localhost:3060/history');
-    const history = (await res.json()) as RestHistoryEntry[];
+    const history = await this._historySvc.allHistory();
 
     runInAction(() => {
       if (!isObservableArray(this._history)) {
@@ -177,9 +174,13 @@ class CalcToolStore {
   }
 
   @action.bound
-  deleteEntry(entryId: number) {
-    const entryIndex = this._history.findIndex(e => e.opId === entryId);
-    this._history.splice(entryIndex, 1);
+  async deleteEntry(entryId: number) {
+    // const entryIndex = this._history.findIndex(e => e.opId === entryId);
+    // this._history.splice(entryIndex, 1);
+
+    await this._historySvc.removeHistoryEntry(entryId);
+
+    return this.refreshHistory();
   }
 }
 
@@ -297,7 +298,7 @@ const CalcToolContainer: FC<CalcToolContainerProps> = ({ store }) => {
 
 };
 
-const store = new CalcToolStore();
+const store = new CalcToolStore(new HistoryService('http://localhost:3060'));
 
 ReactDOM.render(
   <CalcToolContainer store={store} />,
