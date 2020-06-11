@@ -10,5 +10,11 @@
 
 5. Ensure it works!
 
+Hint: https://mobx.js.org/refguide/array.html
+
+// if (isObservableArray(o.items)) {
+//   o.items.replace(newItems); // now I can use replace
+// }
+
 Bonus: upgrade the Calc Tool to use a container component
 
