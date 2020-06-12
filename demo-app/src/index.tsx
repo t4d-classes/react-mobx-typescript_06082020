@@ -163,13 +163,11 @@ class CalcToolStore {
   }
 
   @action.bound
-  clear() {
+  async clear() {
 
-    if (!isObservableArray(this._history)) {
-      throw Error('history is not observable');
-    }
+    await Promise.all(this._history.map(entry => this._historySvc.removeHistoryEntry(entry.opId)));
 
-    this._history.replace([]);
+    return this.refreshHistory();
   }
 
   @action.bound

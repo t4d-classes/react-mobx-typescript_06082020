@@ -1,0 +1,12 @@
+.components-to-run-fieldset label {
+  margin-right: 10px;  
+}
+
+.components-to-run-fieldset > div {
+  margin-top: 16px;
+}
+
+.components-to-run-fieldset button {
+  padding: 6px;
+  font-size: 14px;
+}

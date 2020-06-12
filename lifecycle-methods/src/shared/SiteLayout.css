@@ -1,0 +1,16 @@
+header {
+  margin: 0;
+  padding: 10px 20px;
+  background-color: navy;
+  color: white;
+}
+
+#content {
+  margin: 0;
+  padding: 10px 30px;
+}
+
+header a {
+  color: white;
+  text-decoration: none;
+}

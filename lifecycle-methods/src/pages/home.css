@@ -1,0 +1,7 @@
+.home-page a {
+  text-decoration: none;
+}
+
+.home-page a:hover {
+  text-decoration: underline;
+}

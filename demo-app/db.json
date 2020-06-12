@@ -1,14 +1,14 @@
 {
   "history": [
     {
-      "id": 1,
       "name": "+",
-      "value": 1
+      "value": 2,
+      "id": 1
     },
     {
-      "name": "*",
+      "name": "/",
       "value": 4,
-      "id": 3
+      "id": 2
     }
   ],
   "colors": [
