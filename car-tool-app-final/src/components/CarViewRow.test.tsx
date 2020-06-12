@@ -86,23 +86,29 @@ describe('<CarViewRow /> Enzyme Mock DOM', () => {
       .find('td')
       .slice(0, 6)
       .forEach((node, index) => {
-        const carField = String(car[columns[index]]);
+        const carField = String(car[columns[index] as keyof Car]);
         expect(node.text()).toBe(carField);
       });
   });
 
-  test('<CarViewRow /> delete car button', () => {
+  test('<CarViewRow /> edit car button', () => {
+
     component
       .find('button')
       .first()
       .simulate('click');
+    expect(editCarSpy).toHaveBeenCalledWith(car.id);
+
+  });
+
+  test('<CarViewRow /> delete car button', () => {
+
     component
       .find('button')
       .last()
       .simulate('click');
 
     expect(deleteCarSpy).toHaveBeenCalledWith(car.id);
-    expect(editCarSpy).toHaveBeenCalledWith(car.id);
   });
 });
 
@@ -146,7 +152,7 @@ describe('<CarViewRow /> Shallow with Enzyme', () => {
       .find('td')
       .slice(0, 6)
       .forEach((node, index) => {
-        const carField = String(car[columns[index]]);
+        const carField = String(car[columns[index] as keyof Car]);
         expect(node.text()).toBe(carField);
       });
   });
@@ -156,12 +162,15 @@ describe('<CarViewRow /> Shallow with Enzyme', () => {
       .find('button')
       .first()
       .simulate('click');
+    expect(editCarSpy).toHaveBeenCalledWith(car.id);
+  });
+
+  test('<CarViewRow /> buttons', () => {
     wrapper
       .find('button')
       .last()
       .simulate('click');
-
     expect(deleteCarSpy).toHaveBeenCalledWith(car.id);
-    expect(editCarSpy).toHaveBeenCalledWith(car.id);
   });
+
 });

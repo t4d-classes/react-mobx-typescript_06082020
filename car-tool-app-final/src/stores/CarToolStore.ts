@@ -7,9 +7,13 @@ export class CarToolStore {
 
   constructor(private _carsSvc: ICarsService) { }
 
-  @observable
-  private _cars: Car[] = [];
+  // application state - is the data used to render the UI?
 
+  // stored in the permanent store
+  @observable
+  private _cars = observable.array<Car>([]);
+
+  // stored in the temoporal store
   @observable
   editCarId = -1;
 
@@ -23,11 +27,11 @@ export class CarToolStore {
 
     const cars = await this._carsSvc.allCars()
 
-    runInAction(async () => {
+    runInAction(() => {
 
-      if (!isObservableArray(this._cars)) {
-        throw new Error('cars array should be observable');
-      }
+      // if (!isObservableArray(this._cars)) {
+      //   throw new Error('cars array should be observable');
+      // }
 
       this._cars.replace(cars);
       this.editCarId = -1;
@@ -36,7 +40,7 @@ export class CarToolStore {
   }
 
   @action.bound
-  appendCar = flow(function * (this: CarToolStore, car: Car) {
+  appendCar = flow(function* appendCarFlow(this: CarToolStore, car: Car) {
     yield this._carsSvc.appendCar(car);
     yield this.refreshCars(); 
     this.editCarId = -1;

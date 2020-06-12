@@ -1,14 +1,14 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useContext } from 'react';
 import { useObserver } from 'mobx-react-lite';
 
-import { CarToolStore } from '../stores/CarToolStore';
 import { CarTool } from '../components/CarTool';
+import { CarToolStoreContext } from '../contexts';
 
-export interface CarToolContainerProps {
-  store: CarToolStore;
-}
+export interface CarToolContainerProps { }
 
-export const CarToolContainer: FC<CarToolContainerProps> = ({ store }) => {
+export const CarToolContainer: FC<CarToolContainerProps> = () => {
+
+  const store = useContext(CarToolStoreContext);
 
   useEffect(() => {
     store.refreshCars();

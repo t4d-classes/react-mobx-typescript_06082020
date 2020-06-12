@@ -3,11 +3,3 @@
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom/extend-expect';
-
-import { configure } from 'enzyme';
-import React16Adapter from 'enzyme-adapter-react-16';
-import JestFetchMock from 'jest-fetch-mock';
-
-configure({ adapter: new React16Adapter() });
-
-JestFetchMock.enableMocks();

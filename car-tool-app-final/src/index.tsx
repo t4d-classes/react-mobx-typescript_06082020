@@ -5,13 +5,19 @@ import { configure } from 'mobx';
 import { CarToolContainer } from './containers/CarToolContainer';
 import { CarToolStore } from './stores/CarToolStore';
 import { CarsService } from './services/CarsService';
+import { CarToolStoreContext } from './contexts';
 
 import 'mobx-react-lite/batchingForReactDom';
 
 configure({ enforceActions: 'always' });
 
+
+const carToolStore = new CarToolStore(new CarsService('http://localhost:3060'));
+
 ReactDOM.render(
-  <CarToolContainer store={new CarToolStore(new CarsService('http://localhost:3060'))} />,
+  <CarToolStoreContext.Provider value={carToolStore}>
+    <CarToolContainer />
+  </CarToolStoreContext.Provider>,
   document.querySelector('#root'),    
 );
 

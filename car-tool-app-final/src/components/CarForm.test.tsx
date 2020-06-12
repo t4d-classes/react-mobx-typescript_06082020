@@ -48,7 +48,7 @@ describe('<CarForm /> Enzyme Mock DOM', () => {
 
     Object.keys(car).forEach((propName) => {
       component.find(`#${propName}-input`).simulate('change', {
-        target: { value: car[propName], name: propName },
+        target: { value: car[propName as keyof Car], name: propName },
       });
     });
 
@@ -89,7 +89,7 @@ describe('<CarForm /> Shallow with Enzyme', () => {
 
     Object.keys(car).forEach((propName) => {
       wrapper.find(`#${propName}-input`).simulate('change', {
-        target: { value: car[propName], name: propName },
+        target: { value: car[propName as keyof Car], name: propName },
       });
     });
 

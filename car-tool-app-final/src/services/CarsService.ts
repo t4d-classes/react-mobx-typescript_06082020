@@ -16,6 +16,7 @@ export class CarsService implements ICarsService {
   private getOptions(method = 'GET', body: object | null = null) {
 
     const options: RequestInit = {
+      // method: method,
       method,
     };
 

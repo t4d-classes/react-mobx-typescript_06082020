@@ -27,8 +27,6 @@ describe('use form custom hook', () => {
     });
 
     form = result.current[0];
-
-    form = result.current[0];
     expect(form.firstName).toEqual('B');
     expect(form.age).toBeNaN();
 

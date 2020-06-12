@@ -1,0 +1,41 @@
+
+.header, .menu {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.header {
+  grid-area: header;
+  padding: 20px;
+}
+
+.footer {
+  grid-area: footer;
+
+  text-align: center;
+  padding-top: 10px;
+}
+
+.menu {
+  grid-area: menu;
+}
+
+.menu > ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.menu > ul > li {
+  padding: 4px;
+  margin: 0;
+}
+
+.sidebar {
+  grid-area: sidebar;
+  padding: 10px;
+}
+
